@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YourCloseFriend - Wellness Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        // A vibrant cyan palette for dark mode
+                        primary: {
+                            light: '#67e8f9', // cyan-300
+                            DEFAULT: '#06b6d4', // cyan-500
+                            medium: '#0891b2', // cyan-600
+                            dark: '#0e7490', // cyan-700
+                        },
+                        // Dark background palette
+                        bg: {
+                            DEFAULT: '#0f172a', // slate-900 (main bg)
+                            light: '#1e293b', // slate-800 (card bg)
+                            lighter: '#334155', // slate-700 (borders, inputs)
+                        }
+                    }
+                },
+            },
+        };
+    </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Apply the Inter font and dark background */
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #0f172a; /* bg.DEFAULT */
+        }
+        /* Simple transition for page content visibility */
+        .page-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom styles for active nav links in dark mode */
+        .nav-link.active {
+            color: #67e8f9; /* primary.light */
+            border-bottom-color: #67e8f9; /* primary.light */
+        }
+        .mobile-nav-link.active {
+            color: #67e8f9; /* primary.light */
+            background-color: #334155; /* bg.lighter */
+            border-left-color: #67e8f9; /* primary.light */
+        }
+    </style>
+</head>
+<body class="text-gray-300">
+
+    <nav class="bg-bg-light shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" onclick="showPage('landing')" class="flex items-center text-2xl font-bold text-gray-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 mr-2 text-primary-light">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                        </svg>
+                        YourCloseFriend
+                    </a>
+                </div>
+                
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="#" id="nav-home" class="nav-link inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" onclick="showPage('home')">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /> </svg>
+                        Health Care
+                    </a>
+                    <a href="#" id="nav-suggestion" class="nav-link inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" onclick="showPage('suggestion')">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"> <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /> </svg>
+                        Friendly Suggestion
+                    </a>
+                    <a href="#" id="nav-helplines" class="nav-link inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" onclick="showPage('helplines')">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.249-8.25-3.286zm0 13.036h.008v.008H12v-.008z" /> </svg>
+                        Immediate Support
+                    </a>
+                    <a href="#" id="nav-roadmaps" class="nav-link inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium" onclick="showPage('roadmaps')">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2"> <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.5-8.625l-1.06-1.06a.75.75 0 00-1.06 0l-1.06 1.06M19.5 12.75l-1.06-1.06a.75.75 0 00-1.06 0l-1.06 1.06M19.5 12.75l1.06 1.06a.75.75 0 010 1.06l-1.06 1.06M15 12.75l1.06 1.06a.75.75 0 010 1.06l-1.06 1.06M15 12.75l-1.06-1.06a.75.75 0 00-1.06 0l-1.06 1.06M4.5 12.75l1.06-1.06a.75.75 0 011.06 0l1.06 1.06M4.5 12.75l-1.06 1.06a.75.75 0 000 1.06l1.06 1.06M9 12.75l-1.06-1.06a.75.75 0 00-1.06 0l-1.06 1.06M9 12.75l1.06 1.06a.75.75 0 010 1.06l-1.06 1.06" /> </svg>
+                        Skills Roadmaps
+                    </a>
+                </div>
+
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-bg-lighter focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-DEFAULT" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="sm:hidden hidden" id="mobile-menu">
+            <div class="pt-2 pb-3 space-y-1">
+                <a href="#" class="mobile-nav-link block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showPage('home', true)">Health Care</a>
+                <a href="#" class="mobile-nav-link block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showPage('suggestion', true)">Friendly Suggestion</a>
+                <a href="#" class="mobile-nav-link block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showPage('helplines', true)">Immediate Support</a>
+                <a href="#" class="mobile-nav-link block pl-3 pr-4 py-2 border-l-4 text-base font-medium" onclick="showPage('roadmaps', true)">Skills Roadmaps</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <div id="page-landing" class="page-content">
+            <header class="text-center mb-12">
+                <h1 class="text-5xl font-extrabold text-white mb-4">Welcome, Friend.</h1>
+                <p class="text-xl text-gray-400">Your personal hub for wellness and growth. What's on your mind?</p>
+            </header>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 transition-all duration-300 hover:shadow-primary-dark/20 hover:-translate-y-1 cursor-pointer" onclick="showPage('home')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-primary-DEFAULT"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /> </svg>
+                    <h3 class="text-2xl font-semibold text-white mb-2">Health Care</h3>
+                    <p class="text-gray-400">Diet tips, fitness, and a health chat assistant.</p>
+                </div>
+
+                <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 transition-all duration-300 hover:shadow-primary-dark/20 hover:-translate-y-1 cursor-pointer" onclick="showPage('suggestion')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-primary-DEFAULT"> <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /> </svg>
+                    <h3 class="text-2xl font-semibold text-white mb-2">Friendly Suggestion</h3>
+                    <p class="text-gray-400">A space to share your thoughts and get a kind reply.</p>
+                </div>
+
+                <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 transition-all duration-300 hover:shadow-primary-dark/20 hover:-translate-y-1 cursor-pointer" onclick="showPage('helplines')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-primary-DEFAULT"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0-10.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.249-8.25-3.286zm0 13.036h.008v.008H12v-.008z" /> </svg>
+                    <h3 class="text-2xl font-semibold text-white mb-2">Immediate Support</h3>
+                    <p class="text-gray-400">Confidential helpline numbers for when you need them.</p>
+                </div>
+
+                <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 transition-all duration-300 hover:shadow-primary-dark/20 hover:-translate-y-1 cursor-pointer" onclick="showPage('roadmaps')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-primary-DEFAULT"> <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.5-8.625l-1.06-1.06a.75.75 0 00-1.06 0l-1.06 1.06M19.5 12.75l-1.06-1.06a.75.75 0 00-1.06 0l-1.06 1.06M19.5 12.75l1.06 1.06a.75.75 0 010 1.06l-1.06 1.06M15 12.75l1.06 1.06a.75.75 0 010 1.06l-1.06 1.06M15 12.75l-1.06-1.06a.75.75 0 00-1.06 0l-1.06 1.06M4.5 12.75l1.06-1.06a.75.75 0 011.06 0l1.06 1.06M4.5 12.75l-1.06 1.06a.75.75 0 000 1.06l1.06 1.06M9 12.75l-1.06-1.06a.75.75 0 00-1.06 0l-1.06 1.06M9 12.75l1.06 1.06a.75.75 0 010 1.06l-1.06 1.06" /> </svg>
+                    <h3 class="text-2xl font-semibold text-white mb-2">Skills Roadmaps</h3>
+                    <p class="text-gray-400">Guides for learning new skills in tech and beyond.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-home" class="page-content">
+            <header class="text-center mb-12">
+                <h1 class="text-5xl font-extrabold text-white mb-4">❤️ Your Daily Boost for Body & Mind</h1>
+                <p class="text-xl text-gray-400">Your personal wellness corner. Let's build healthy habits together.</p>
+            </header>
+
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-primary-light mb-6 text-center">Health Chat Assistant</h2>
+                
+                <div id="robo-doctor-icon" class="text-center cursor-pointer group" onclick="toggleChatbot()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-24 h-24 mx-auto text-primary-light transition-all duration-300 group-hover:text-primary-DEFAULT group-hover:scale-110">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M12 3v1.5M15.75 3v1.5M8.25 18.75V21M12 18.75V21M15.75 18.75V21M3 8.25h1.5M3 12h1.5M3 15.75h1.5M18.75 8.25h1.5M18.75 12h1.5M18.75 15.75h1.5M8.25 6H6v2.25M8.25 18H6v-2.25M15.75 6h2.25v2.25M15.75 18h2.25v-2.25M12 6.75h3.75v3.75H12v-3.75zm0 7.5h3.75v3.75H12v-3.75zm-7.5 0h3.75v3.75H4.5v-3.75zm0-7.5h3.75v3.75H4.5v-3.75z" />
+                    </svg>
+                    <p class="text-primary-light mt-2 font-semibold group-hover:text-primary-DEFAULT">Click to open Robo Doctor</p>
+                </div>
+
+                <div id="chatbot-ui" class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl max-w-3xl mx-auto" style="display:none;">
+                    <div class="flex justify-between items-center p-4 border-b border-bg-lighter">
+                        <h3 class="text-lg font-semibold text-white">Robo Doctor Assistant</h3>
+                        <button id="close-chat-btn" onclick="toggleChatbot()" class="text-gray-400 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="chat-window" class="h-80 p-4 sm:p-6 overflow-y-auto space-y-4 flex flex-col">
+                        <div class="p-3 rounded-lg bg-bg-lighter self-start max-w-xs shadow">
+                            <p class="text-sm text-gray-200">Robo Doctor online. Please state your symptoms for analysis. (e.g., 'headache', 'stress')</p>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-bg-lighter flex gap-2 sm:gap-4">
+                        <input type="text" id="chat-input" class="flex-1 w-full p-3 bg-bg-lighter border border-gray-600 rounded-lg shadow-sm focus:ring-primary-DEFAULT focus:border-primary-DEFAULT text-white placeholder:text-gray-500" placeholder="Type your symptom...">
+                        <button id="chat-send-btn" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-bg-DEFAULT bg-primary-light hover:bg-primary-DEFAULT focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-DEFAULT transition-colors">
+                            Send
+                        </button>
+                    </div>
+                </div>
+                <p class="text-center text-xs text-gray-500 mt-4 max-w-2xl mx-auto">
+                    <strong>Disclaimer:</strong> This is an AI assistant, not a medical professional. The solutions are not doctor-prescribed. Please consult a doctor for serious health issues.
+                </p>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-primary-light mb-6 text-center">How to Maintain Physical Fitness</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-white mb-2">1. Consistent Exercise</h3>
+                        <p class="text-gray-300">Aim for 30 minutes of moderate activity (like brisk walking) most days. Include strength training 2-3 times a week.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-white mb-2">2. Balanced Diet</h3>
+                        <p class="text-gray-300">Fuel your body. A mix of protein, complex carbs, and healthy fats is key. (More details below!)</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-white mb-2">3. Stay Hydrated</h3>
+                        <p class="text-gray-300">Water is essential for performance and recovery. Aim for 8 glasses (about 2 liters) a day, more if you're active.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-white mb-2">4. Get Enough Sleep</h3>
+                        <p class="text-gray-300">Your muscles repair and grow while you sleep. Aim for 7-9 hours of quality sleep per night.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-primary-light mb-6 text-center">Details of a Healthy Diet</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-white mb-2">1. Eat Whole Foods</h3>
+                        <p class="text-gray-300">Focus on foods that are not processed. Think fruits, vegetables, nuts, seeds, and whole grains.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-white mb-2">2. Balance Your Plate</h3>
+                        <p class="text-gray-300">Aim for 50% veggies/fruits, 25% lean protein (chicken, beans), and 25% complex carbs (quinoa, brown rice).</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-white mb-2">3. Limit Processed Foods</h3>
+                        <p class="text-gray-300">Reduce intake of sugary drinks, packaged snacks, and fast food. These often contain hidden sugars and unhealthy fats.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-6">
+                        <h3 class="text-xl font-semibold text-white mb-2">4. Mindful Eating</h3>
+                        <p class="text-gray-300">Pay attention to your body's hunger and fullness cues. Eat slowly and savor your food without distractions.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-3xl font-bold text-primary-light mb-6 text-center">20 Healthy Food Recipes</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">1. Power Smoothie</h3>
+                        <p class="text-sm text-gray-300">Spinach, 1/2 banana, protein powder, almond milk.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">2. Quick Quinoa Salad</h3>
+                        <p class="text-sm text-gray-300">Cooked quinoa, cucumber, cherry tomatoes, lemon juice, olive oil.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">3. Avocado Toast</h3>
+                        <p class="text-sm text-gray-300">Whole-grain toast, mashed avocado, chili flakes, pinch of salt.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">4. Greek Yogurt Bowl</h3>
+                        <p class="text-sm text-gray-300">Greek yogurt, berries, handful of almonds, drizzle of honey.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">5. Baked Salmon & Asparagus</h3>
+                        <p class="text-sm text-gray-300">Salmon fillet, asparagus spears, olive oil, lemon. Bake at 200°C for 15 min.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">6. Veggie Omelette</h3>
+                        <p class="text-sm text-gray-300">2 eggs, bell peppers, onions, spinach. Cook in a pan.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">7. Chickpea Curry</h3>
+                        <p class="text-sm text-gray-300">Canned chickpeas, diced tomatoes, onion, curry powder, coconut milk.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">8. Apple Slices & Peanut Butter</h3>
+                        <p class="text-sm text-gray-300">1 apple sliced, 2 tbsp natural peanut butter.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">9. Grilled Chicken Salad</h3>
+                        <p class="text-sm text-gray-300">Grilled chicken breast, mixed greens, vinaigrette.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">10. Stuffed Bell Peppers</h3>
+                        <p class="text-sm text-gray-300">Bell peppers stuffed with cooked quinoa and black beans, baked.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">11. Oatmeal with Berries</h3>
+                        <p class="text-sm text-gray-300">Rolled oats, water/milk, topped with fresh or frozen berries.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">12. Lentil Soup</h3>
+                        <p class="text-sm text-gray-300">Brown lentils, carrots, celery, onion, vegetable broth.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">13. Cottage Cheese & Fruit</h3>
+                        <p class="text-sm text-gray-300">1 cup cottage cheese topped with pineapple or peaches.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">14. Tuna Salad Lettuce Wraps</h3>
+                        <p class="text-sm text-gray-300">Canned tuna mixed with Greek yogurt, served in lettuce cups.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">15. Hard-Boiled Eggs</h3>
+                        <p class="text-sm text-gray-300">2 hard-boiled eggs. Simple, portable protein.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">16. Edamame</h3>
+                        <p class="text-sm text-gray-300">1 cup steamed edamame with a pinch of sea salt.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">17. Chicken Stir-Fry</h3>
+                        <p class="text-sm text-gray-300">Chicken strips, broccoli, bell peppers, soy sauce.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">18. Sweet Potato "Toast"</h3>
+                        <p class="text-sm text-gray-300">Thinly sliced sweet potato, toasted, topped with almond butter.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">19. Handful of Almonds</h3>
+                        <p class="text-sm text-gray-300">A small handful (1/4 cup) of raw, unsalted almonds.</p>
+                    </div>
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-5">
+                        <h3 class="text-lg font-semibold text-white mb-1">20. Dark Chocolate (70%+)</h3>
+                        <p class="text-sm text-gray-300">One or two squares for a healthy dessert.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="page-suggestion" class="page-content">
+            <header class="text-center mb-12">
+                <h1 class="text-5xl font-extrabold text-white mb-4">🗣️ What's on your mind?</h1>
+                <p class="text-xl text-gray-400">Vent & Mend. Share your problem and get a friendly suggestion.</p>
+            </header>
+
+            <section class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 sm:p-10 max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-primary-light mb-6">Share Your Thoughts</h2>
+                <!-- Knife chatbot trigger (as requested) -->
+                <div id="knife-area" class="text-center mb-6">
+                    <button id="knife-icon" onclick="toggleKnifeChatbot()" class="group inline-flex flex-col items-center bg-transparent border-0 cursor-pointer">
+                            <!-- More realistic knife SVG: blade gradient + wooden handle + rivets -->
+                            <svg id="knife-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" class="w-20 h-20 transition-transform duration-200 group-hover:scale-110" role="img" aria-label="knife">
+                                <defs>
+                                    <linearGradient id="bladeGrad" x1="0" y1="0" x2="1" y2="0">
+                                        <stop offset="0" stop-color="#f8fafc" stop-opacity="1" />
+                                        <stop offset="0.45" stop-color="#cbd5e1" stop-opacity="1" />
+                                        <stop offset="1" stop-color="#94a3b8" stop-opacity="1" />
+                                    </linearGradient>
+                                    <linearGradient id="handleGrad" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0" stop-color="#4b2e1e" />
+                                        <stop offset="1" stop-color="#2b1a12" />
+                                    </linearGradient>
+                                    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+                                        <feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#000" flood-opacity="0.25" />
+                                    </filter>
+                                </defs>
+
+                                <!-- Blade -->
+                                <path d="M4 20 C40 6, 80 6, 112 12 C110 14, 94 18, 72 26 C56 32, 36 36, 18 36 C12 36, 6 33, 4 20 Z"
+                                      fill="url(#bladeGrad)" stroke="#9aa6b3" stroke-width="0.8" filter="url(#softShadow)" />
+
+                                <!-- Grind line on blade -->
+                                <path d="M10 22 C34 12, 72 10, 102 15"
+                                      stroke="#e6eef4" stroke-width="0.8" fill="none" opacity="0.9" />
+
+                                <!-- Handle body (wood) -->
+                                <rect x="-2" y="26" width="26" height="10" rx="3" ry="3" fill="url(#handleGrad)" stroke="#1b0f08" stroke-width="0.6" />
+
+                                <!-- Metal bolster between blade and handle -->
+                                <rect x="18" y="23.5" width="6" height="4" rx="1" ry="1" fill="#888c90" stroke="#666" stroke-width="0.5" />
+
+                                <!-- Rivets on handle -->
+                                <circle cx="6" cy="31" r="1.6" fill="#222" opacity="0.95" />
+                                <circle cx="12" cy="31" r="1.6" fill="#222" opacity="0.95" />
+                                <circle cx="18" cy="31" r="1.6" fill="#222" opacity="0.95" />
+                            </svg>
+                        <span class="mt-2 text-sm text-red-300 font-semibold">Don't Dare to touch it</span>
+                    </button>
+                </div>
+                <!-- Knife-chatbot UI (hidden by default) -->
+                <div id="knife-chatbot-ui" class="bg-bg-lighter border border-bg-lighter shadow-lg rounded-xl max-w-3xl mx-auto mb-6" style="display:none;">
+                    <div class="flex justify-between items-center p-4 border-b border-bg-lighter">
+                        <h3 class="text-lg font-semibold text-white">Friendly Knife Chat</h3>
+                        <button id="close-knife-chat" onclick="toggleKnifeChatbot()" class="text-gray-400 hover:text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="friend-chat-window" class="h-56 p-4 sm:p-6 overflow-y-auto space-y-4 flex flex-col bg-bg-light">
+                        <div class="p-3 rounded-lg bg-bg-lighter self-start max-w-xs shadow">
+                            <p class="text-sm text-gray-200">Hello — I'm listening. Type something and I'll try to help.</p>
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-bg-lighter flex gap-2 sm:gap-4">
+                        <input type="text" id="knife-chat-input" class="flex-1 w-full p-3 bg-bg-lighter border border-gray-600 rounded-lg shadow-sm focus:ring-primary-DEFAULT focus:border-primary-DEFAULT text-white placeholder:text-gray-500" placeholder="Share a feeling or short problem...">
+                        <button id="knife-chat-send" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-bg-DEFAULT bg-primary-light hover:bg-primary-DEFAULT focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-DEFAULT transition-colors">
+                            Send
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-blue-900 border-l-4 border-blue-500 p-4 mb-6 rounded-r-lg">
+                    <p class="font-semibold text-blue-200">Important:</p>
+                    <p class="text-blue-300">I am an AI, not a therapist. My suggestions are for informational purposes only. If you are in crisis, please use the <strong><a href="#" onclick="showPage('helplines')" class="font-medium text-blue-200 hover:underline">Immediate Support</a></strong> page.</p>
+                </div>
+
+                <!-- Suggestion form removed — use the knife chatbot below to get suggestions -->
+            </section>
+        </div>
+
+        <div id="page-helplines" class="page-content">
+            <header class="text-center mb-12">
+                <h1 class="text-5xl font-extrabold text-white mb-4">🆘 You Are Not Alone</h1>
+                <p class="text-xl text-gray-400">Help is available. Here are resources that can support you.</p>
+            </header>
+
+            <section class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 sm:p-10 max-w-3xl mx-auto">
+                <h2 class="text-3xl font-bold text-red-400 mb-6">Helpline Numbers</h2>
+
+                <div class="bg-red-900 border-l-4 border-red-500 p-4 mb-6 rounded-r-lg">
+                    <p class="font-semibold text-red-200">In case of emergency:</p>
+                    <p class="text-red-300">If you are in immediate danger, please call your local emergency services (e.g., 911, 112, 100). The numbers below are for non-emergent crisis support.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-bg-lighter border border-gray-700 rounded-lg p-4">
+                        <strong class="text-gray-100 text-lg block">KIRAN (Mental Health Rehabilitation Helpline):</strong>
+                        <span class="text-gray-300">Call 1800-599-0019 (24/7, Govt. of India)</span>
+                    </div>
+                    <div class="bg-bg-lighter border border-gray-700 rounded-lg p-4">
+                        <strong class="text-gray-100 text-lg block">AASRA (Suicide Prevention & Crisis Intervention):</strong>
+                        <span class="text-gray-300">Call 91-9820466526 (24/7)</span>
+                    </div>
+                    <div class="bg-bg-lighter border border-gray-700 rounded-lg p-4">
+                        <strong class="text-gray-100 text-lg block">Vandrevala Foundation Helpline:</strong>
+                        <span class="text-gray-300">Call 1860-266-2345 (24/7 Mental Health Helpline)</span>
+                    </div>
+                    <div class="bg-bg-lighter border border-gray-700 rounded-lg p-4">
+                        <strong class="text-gray-100 text-lg block">Childline India:</strong>
+                        <span class="text-gray-300">Call 1098 (For children in distress)</span>
+                    </div>
+                    <div class="bg-bg-lighter border border-gray-700 rounded-lg p-4">
+                        <strong class="text-gray-100 text-lg block">National Women Helpline:</strong>
+                        <span class="text-gray-300">Call 181 (For women in distress / domestic violence)</span>
+                    </div>
+                    <div class="bg-bg-lighter border border-gray-700 rounded-lg p-4">
+                        <strong class="text-gray-100 text-lg block">National Commission for Women (NCW):</strong>
+                        <span class="text-gray-300">Call 1800 212 1102 or WhatsApp 782717739</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="page-roadmaps" class="page-content">
+            <header class="text-center mb-12">
+                <h1 class="text-5xl font-extrabold text-white mb-4">🧭 Your Future, Mapped Out</h1>
+                <p class="text-xl text-gray-400">Pick your path! Here are friendly guides to starting your tech journey.</p>
+            </header>
+            
+            <section class="w-full">
+                <h2 class="text-3xl font-bold text-primary-light mb-8 text-center">Roadmaps for Tech Students</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 transition-all duration-300 hover:shadow-primary-dark/20 hover:-translate-y-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-primary-DEFAULT"> <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v16.5h16.5M3.75 19.5h16.5M9 14.25l6-6m-3-3.75l3 3m-3 0l-3 3" /> </svg>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Data Science</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                            <li>Foundations (Python, SQL, Stats)</li>
+                            <li>Data Wrangling (Pandas, NumPy)</li>
+                            <li>Data Visualization (Matplotlib, Seaborn)</li>
+                            <li>Machine Learning (Scikit-learn)</li>
+                            <li>Practice (Kaggle, HackerRank)</li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 transition-all duration-300 hover:shadow-primary-dark/20 hover:-translate-y-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-primary-DEFAULT"> <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5 0l-4.5 16.5" /> </svg>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Web Development (Full-Stack)</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                            <li>Foundation (HTML, CSS, JavaScript)</li>
+                            <li>Frontend (React, Vue, or Angular)</li>
+                            <li>Backend (Node.js, Python/Django)</li>
+                            <li>Database (SQL and NoSQL)</li>
+                            <li>Deployment (Git, AWS, Netlify)</li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 transition-all duration-300 hover:shadow-primary-dark/20 hover:-translate-y-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-primary-DEFAULT"> <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M12 3v1.5M15.75 3v1.5M8.25 18.75V21M12 18.75V21M15.75 18.75V21M3 8.25h1.5M3 12h1.5M3 15.75h1.5M18.75 8.25h1.5M18.75 12h1.5M18.75 15.75h1.5M8.25 6H6v2.25M8.25 18H6v-2.25M15.75 6h2.25v2.25M15.75 18h2.25v-2.25M12 6.75h3.75v3.75H12v-3.75zm0 7.5h3.75v3.75H12v-3.75zm-7.5 0h3.75v3.75H4.5v-3.75zm0-7.5h3.75v3.75H4.5v-3.75z" /> </svg>
+                        <h3 class="text-2xl font-semibold text-white mb-4">AI Agent</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                            <li>Foundations (Python, DSA, APIs)</li>
+                            <li>LLM Fundamentals (Prompt Engineering)</li>
+                            <li>Agent Frameworks (LangChain, LlamaIndex)</li>
+                            <li>Vector Databases (Pinecone, Chroma)</li>
+                            <li>Tool Use (Connecting to real-world APIs)</li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 transition-all duration-300 hover:shadow-primary-dark/20 hover:-translate-y-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-primary-DEFAULT">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V5.25A2.25 2.25 0 0018 3H6A2.25 2.25 0 003.75 5.25v12.75A2.25 2.25 0 006 20.25z" />
+                        </svg>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Data Structures & Algorithms</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                            <li>Pick a Language (Python/C++/Java)</li>
+                            <li>Learn Big O Notation</li>
+                            <li>Basic Structures (Arrays, Strings, Maps)</li>
+                            <li>Core Structures (Lists, Stacks, Queues, Trees)</li>
+                            <li>Practice Problems (LeetCode, HackerRank)</li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 transition-all duration-300 hover:shadow-primary-dark/20 hover:-translate-y-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-primary-DEFAULT">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.75c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.57-.598-3.75h-.152c-3.196 0-6.1-1.249-8.25-3.286z" />
+                        </svg>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Cyber Security</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                            <li>IT Fundamentals (Networking, OS)</li>
+                            <li>Security Concepts (CIA Triad, Risk)</li>
+                            <li>Network Security (Firewalls, VPNs)</li>
+                            <li>Ethical Hacking (Pentesting)</li>
+                            <li>Get Certified (Security+, CEH)</li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-bg-light border border-bg-lighter shadow-lg rounded-xl p-8 transition-all duration-300 hover:shadow-primary-dark/20 hover:-translate-y-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mb-4 text-primary-DEFAULT">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c-1.35 0-2.64-.26-3.8-.73M12 21c1.35 0 2.64-.26 3.8-.73M12 3a9.004 9.004 0 00-8.716 6.747M12 3a9.004 9.004 0 018.716 6.747M12 3c-1.35 0-2.64-.26-3.8-.73M12 3c1.35 0 2.64-.26 3.8-.73M3 12c0-1.35.26-2.64.73-3.8M3 12c0 1.35.26 2.64.73 3.8m17.54-3.8c.47 1.16.73 2.45.73 3.8s-.26 2.64-.73 3.8" />
+                        </svg>
+                        <h3 class="text-2xl font-semibold text-white mb-4">Computer Networks</h3>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                            <li>OSI & TCP/IP Models</li>
+                            <li>Networking Hardware (Routers, Switches)</li>
+                            <li>IP Addressing & Subnetting</li>
+                            <li>Protocols (HTTP, DNS, TCP/UDP)</li>
+                            <li>Get Certified (Network+, CCNA)</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <footer class="bg-bg-light mt-16 border-t border-bg-lighter">
+        <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p>&copy; 2025 YourCloseFriend. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const openIcon = mobileMenuButton.querySelector('svg:first-child');
+            const closeIcon = mobileMenuButton.querySelector('svg:last-child');
+
+            // Toggle mobile menu
+            mobileMenuButton.addEventListener('click', () => {
+                const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.classList.toggle('hidden');
+                openIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            });
+
+            // --- Page Navigation Logic ---
+            window.showPage = (pageId, isMobile = false) => {
+                // Hide all pages
+                document.querySelectorAll('.page-content').forEach(page => {
+                    page.style.display = 'none';
+                });
+                
+                // Show the selected page
+                const activePage = document.getElementById(`page-${pageId}`);
+                if (activePage) {
+                    activePage.style.display = 'block';
+                }
+
+                // Update active state for desktop nav
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    link.classList.add('border-transparent', 'text-gray-400', 'hover:border-gray-500', 'hover:text-white');
+                });
+                const activeNavLink = document.getElementById(`nav-${pageId}`);
+                if (activeNavLink) {
+                    activeNavLink.classList.add('active');
+                    activeNavLink.classList.remove('border-transparent', 'text-gray-400', 'hover:border-gray-500', 'hover:text-white');
+                }
+
+                // Update active state for mobile nav
+                document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    link.classList.add('border-transparent', 'text-gray-400', 'hover:bg-bg-lighter', 'hover:border-gray-600', 'hover:text-white');
+                });
+                const activeMobileLink = Array.from(document.querySelectorAll('.mobile-nav-link')).find(link => link.onclick.toString().includes(`showPage('${pageId}'`));
+                if (activeMobileLink) {
+                    activeMobileLink.classList.add('active');
+                    activeMobileLink.classList.remove('border-transparent', 'text-gray-400', 'hover:bg-bg-lighter', 'hover:border-gray-600', 'hover:text-white');
+                }
+                
+                // If a mobile link was clicked, close the menu
+                if (isMobile) {
+                    mobileMenuButton.click();
+                }
+
+                // Scroll to top
+                window.scrollTo(0, 0);
+            };
+
+            // Show the home page by default
+            showPage('landing');
+
+            // --- NEW: Chatbot Toggle Logic ---
+            window.toggleChatbot = () => {
+                const icon = document.getElementById('robo-doctor-icon');
+                const chatUI = document.getElementById('chatbot-ui');
+
+                if (chatUI.style.display === 'none') {
+                    // Open chat
+                    chatUI.style.display = 'block';
+                    icon.style.display = 'none';
+                } else {
+                    // Close chat
+                    chatUI.style.display = 'none';
+                    icon.style.display = 'block';
+                }
+            };
+
+            // Shared suggestion generator so other widgets can reuse it
+            window.generateSuggestion = (text) => {
+                const problem = (text || '').toLowerCase();
+                let suggestion = '';
+
+                if (problem.includes('study') || problem.includes('overwhelmed') || problem.includes('exam')) {
+                    suggestion = "It sounds like you're under a lot of pressure. That's a really tough feeling. Remember to take small breaks—the 'Pomodoro Technique' (25 min work, 5 min break) can really help. You can't pour from an empty cup. You've got this.";
+
+                } else if (problem.includes('friend') || problem.includes('argument') || problem.includes('lonely')) {
+                    suggestion = "That's really hard. Relationships can be a source of both great joy and great pain. Maybe try writing down what you want to say, just for yourself. Sometimes, clarity helps. If it feels right, a simple 'I'm thinking of you' can open a door.";
+
+                } else if (problem.includes('job') || problem.includes('career') || problem.includes('interview')) {
+                    suggestion = "The professional world can be so stressful. It's completely normal to feel this way. Try breaking down the big problem into tiny, manageable steps. What's one small thing you can do *right now*? Even just updating one line on your resume is progress.";
+
+                } else {
+                    // A generic, supportive response
+                    suggestion = "Thank you for sharing. It's brave to name what you're feeling. Remember to be kind to yourself. A simple, practical next step might be to step away for 10 minutes, get a glass of water, and take a few deep breaths. You are not alone in this feeling.";
+                }
+
+                return suggestion;
+            };
+
+            // --- Knife chatbot toggle & logic ---
+            window.toggleKnifeChatbot = () => {
+                const knifeUI = document.getElementById('knife-chatbot-ui');
+                const knifeArea = document.getElementById('knife-area');
+
+                if (!knifeUI) return;
+
+                if (knifeUI.style.display === 'none') {
+                    knifeUI.style.display = 'block';
+                    // hide the knife icon while open to mimic "danger"
+                    knifeArea.style.display = 'none';
+                    // focus input
+                    setTimeout(() => {
+                        const kInput = document.getElementById('knife-chat-input');
+                        if (kInput) kInput.focus();
+                    }, 120);
+                } else {
+                    knifeUI.style.display = 'none';
+                    knifeArea.style.display = 'block';
+                }
+            };
+
+            // Knife chat interactions
+            const knifeChatWindow = document.getElementById('knife-chat-window');
+            const knifeChatInput = document.getElementById('knife-chat-input');
+            const knifeChatSend = document.getElementById('knife-chat-send');
+
+            const appendKnifeMessage = (message, sender) => {
+                if (!knifeChatWindow) return;
+                const el = document.createElement('div');
+                el.textContent = message;
+                el.classList.add('p-3', 'rounded-lg', 'max-w-xs', 'text-sm', 'shadow');
+                if (sender === 'user') {
+                    el.classList.add('bg-primary-medium', 'text-white', 'self-end');
+                } else {
+                    el.classList.add('bg-bg-lighter', 'text-gray-200', 'self-start');
+                }
+                knifeChatWindow.appendChild(el);
+                knifeChatWindow.scrollTop = knifeChatWindow.scrollHeight;
+            };
+
+            const handleKnifeSend = () => {
+                const text = knifeChatInput && knifeChatInput.value.trim();
+                if (!text) return;
+                appendKnifeMessage(text, 'user');
+                if (knifeChatInput) knifeChatInput.value = '';
+
+                // generate suggestion and display as bot reply
+                const reply = generateSuggestion(text);
+                setTimeout(() => appendKnifeMessage(reply, 'bot'), 500);
+            };
+
+            if (knifeChatSend) {
+                knifeChatSend.addEventListener('click', handleKnifeSend);
+            }
+
+            if (knifeChatInput) {
+                knifeChatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleKnifeSend();
+                    }
+                });
+            }
+
+            // --- Health Chatbot Logic ---
+            const chatWindow = document.getElementById('chat-window');
+            const chatInput = document.getElementById('chat-input');
+            const chatSendBtn = document.getElementById('chat-send-btn');
+
+            const appendMessage = (message, sender) => {
+                if (!chatWindow) return; // Don't run if not on health page
+                const messageEl = document.createElement('div');
+                messageEl.textContent = message;
+                messageEl.classList.add('p-3', 'rounded-lg', 'max-w-xs', 'text-sm', 'shadow');
+                
+                if (sender === 'user') {
+                    messageEl.classList.add('bg-primary-medium', 'text-white', 'self-end');
+                } else {
+                    messageEl.classList.add('bg-bg-lighter', 'text-gray-200', 'self-start');
+                }
+                
+                chatWindow.appendChild(messageEl);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+            };
+
+            const getBotResponse = (userMessage) => {
+                const lowerMessage = userMessage.toLowerCase();
+                let botMessage = '';
+
+                if (lowerMessage.includes('headache')) {
+                    botMessage = "Common causes for headaches include dehydration, eye strain, or tension. Try drinking a large glass of water, resting your eyes, and gently stretching your neck. If it's severe or persistent, please see a doctor.";
+                } else if (lowerMessage.includes('stress') || lowerMessage.includes('anxiety')) {
+                    botMessage = "I hear you. For stress, try 'box breathing': inhale for 4 seconds, hold for 4, exhale for 4, and hold for 4. Repeat this a few times. A short walk can also help clear your mind.";
+                } else if (lowerMessage.includes('stomach') || lowerMessage.includes('nausea')) {
+                    botMessage = "For an upset stomach, try sipping on clear fluids like water or ginger tea. Avoid heavy, greasy, or spicy foods for a few hours. A simple BRAT diet (Bananas, Rice, Applesauce, Toast) can help.";
+                } else if (lowerMessage.includes('cold') || lowerMessage.includes('flu') || lowerMessage.includes('cough')) {
+                    botMessage = "For cold symptoms, rest is key. Stay hydrated with plenty of water or warm tea with honey. A humidifier or steam from a hot shower can also help with congestion.";
+                } else if (lowerMessage.includes('sleep') || lowerMessage.includes('tired')) {
+                    botMessage = "To improve sleep, try setting a consistent bedtime. Avoid screens (phone, TV) for at least 30 minutes before bed. Make sure your room is cool, dark, and quiet.";
+                } else {
+                    botMessage = "I'm not familiar with that specific symptom. My general advice is to listen to your body, stay hydrated, and get plenty of rest. If you are concerned, it's always best to consult a medical professional.";
+                }
+
+                // Simulate bot thinking
+                setTimeout(() => {
+                    appendMessage(botMessage, 'bot');
+                }, 600);
+            };
+
+            const handleChatSubmit = () => {
+                const userMessage = chatInput.value.trim();
+                if (!userMessage) return;
+
+                appendMessage(userMessage, 'user');
+                chatInput.value = '';
+
+                getBotResponse(userMessage);
+            };
+
+            if (chatSendBtn) {
+                chatSendBtn.addEventListener('click', handleChatSubmit);
+            }
+
+            if (chatInput) {
+                chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault(); // Prevents form submission
+                        handleChatSubmit();
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
